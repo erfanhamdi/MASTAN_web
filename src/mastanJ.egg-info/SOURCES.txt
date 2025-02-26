@@ -1,11 +1,13 @@
 README.md
 pyproject.toml
 src/__init__.py
-src/bc.py
 src/element.py
 src/frame.py
 src/math_utils.py
 src/node.py
+src/jax/element.py
+src/jax/frame.py
+src/jax/node.py
 src/mastanJ.egg-info/PKG-INFO
 src/mastanJ.egg-info/SOURCES.txt
 src/mastanJ.egg-info/dependency_links.txt
@@ -13,3 +15,4 @@ src/mastanJ.egg-info/requires.txt
 src/mastanJ.egg-info/top_level.txt
 tests/test_element.py
 tests/test_frame.py
+tests/test_node.py

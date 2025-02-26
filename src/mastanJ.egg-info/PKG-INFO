@@ -1,6 +1,6 @@
 Metadata-Version: 2.2
 Name: mastanJ
-Version: 0.1.0
+Version: 0.1.1
 Summary: ME700-assignment-2
 Author-email: Erfan Hamdi <Erfan@bu.edu>
 Classifier: Programming Language :: Python :: 3
@@ -40,7 +40,7 @@ pip install -e .
 ```
 4. You can run the tests using the `pytest` module
 ```
-pytest -v --cov=setupexample  --cov-report term-missing
+pytest -v --cov=src  --cov-report term-missing
 ```
 ## How to implement your own example?
 1. First create a `Frame` object.
