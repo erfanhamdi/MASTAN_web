@@ -1,6 +1,6 @@
 import numpy
 from frame import Frame
-from math_utils import local_elastic_stiffness_matrix_3D_beam, rotation_matrix_3D, transformation_matrix_3D
+from math_utils import local_elastic_stiffness_matrix_3D_beam, rotation_matrix_3D, transformation_matrix_3D, local_geometric_stiffness_matrix_3D_beam
 
 class Element(Frame):
     def __init__(self, node_list, **kwargs):
@@ -18,16 +18,31 @@ class Element(Frame):
 
         self.Iz = kwargs.get('Iz', 1.0)
 
+        self.I_rho = kwargs.get('I_rho', 1.0)
+        
         self.J = kwargs.get('J', 1.0)
     
         self.nu = kwargs.get('nu', 0.3)
 
+        self.element_dof_list_ = []
     def __repr__(self):
         # prints the element's properties
         return f"Element id: (E={self.E}), A={self.A}, L={self.L}, Iy={self.Iy}, Iz={self.Iz}, J={self.J}, nu={self.nu}"
     
+    def dof_list(self,):
+        return [*list(range(self.node_list[0].id*6, self.node_list[0].id*6 + 6)), *list(range(self.node_list[1].id*6, self.node_list[1].id*6 + 6))]
+    
     def stiffness_mat(self,):
         return local_elastic_stiffness_matrix_3D_beam(self.E, self.nu, self.A, self.L, self.Iy, self.Iz, self.J)
+    
+    def geometric_stiffness_mat(self,F):
+        """Fx2, Mx2, My1, Mz1, My2, Mz2"""
+        F = self.Gamma().T @ F
+        F_list = [F[6], F[9], F[4], F[5], F[10], F[11]]
+        self.k_g = local_geometric_stiffness_matrix_3D_beam(self.L, self.A, self.I_rho, *F_list)
+    
+    def global_geometric_stiffness_mat(self, small_k_g):
+            return self.Gamma().T @ small_k_g @ self.Gamma()
     
     def Gamma(self,):
         gamma = rotation_matrix_3D(v_temp=self.local_z, *self.coord_list)
@@ -35,7 +50,9 @@ class Element(Frame):
     
     def global_stiffness_mat(self,):
         return self.Gamma().T @ self.stiffness_mat() @ self.Gamma()
-        
+    
+    def internal_force(self, delta):
+         return self.global_stiffness_mat() @ delta[self.element_dof_list_]
 
 # Example usage:
 

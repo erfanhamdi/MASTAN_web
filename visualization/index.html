@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Structural Analysis Visualization</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <!-- Use ES modules for Three.js -->
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three@0.150.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@0.150.0/examples/jsm/"
+                }
+            }
+        </script>
+        <!-- Add Font Awesome for theme toggle icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+<body>
+    <div id="left-panel" class="panel">
+        <h1>Structural Analysis</h1>
+        <button id="theme-toggle" aria-label="Toggle dark/light mode">
+            <i class="fas fa-moon"></i>
+        </button>
+        
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-button" data-tab="geometry">Geometry</button>
+            <button class="tab-button" data-tab="node-element-type">Node/Element Type</button>
+            <button class="tab-button" data-tab="postprocessing">Postprocessing</button>
+        </div>
+
+        <!-- Geometry Tab -->
+        <div id="geometry" class="tab-content">
+            <div class="section">
+                <h2>Add Node</h2>
+                <div class="node-input">
+                    <input type="number" id="node-x" placeholder="X" step="any" value="0" class="coord-input">
+                    <input type="number" id="node-y" placeholder="Y" step="any" value="0" class="coord-input">
+                    <input type="number" id="node-z" placeholder="Z" step="any" value="0" class="coord-input">
+                </div>
+                <div class="action-buttons">
+                    <button id="add-node-btn" class="secondary-button">Add Node</button>
+                    <button id="clear-nodes-btn" class="secondary-button">Clear Nodes</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Nodes</h2>
+                <div id="geometry-node-list" class="node-list"></div>
+            </div>
+
+            <div class="section">
+                <h2>Create Element</h2>
+                <div class="node-input">
+                    <input type="number" id="element-node1" placeholder="Node 1">
+                    <input type="number" id="element-node2" placeholder="Node 2">
+                </div>
+                <div class="action-buttons">
+                    <button id="add-element-btn" class="secondary-button">Add Element</button>
+                    <button id="clear-elements-btn" class="secondary-button">Clear Elements</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Elements</h2>
+                <div id="element-list" class="element-list"></div>
+            </div>
+
+            <button id="geometry-all-set" class="primary-button">All Set</button>
+        </div>
+
+        <!-- Node/Element Type Tab -->
+        <div id="node-element-type" class="tab-content">
+            <div class="section">
+                <h2>Node Properties</h2>
+                <select id="node-selector" class="full-width"></select>
+                
+                <div class="input-groups compact">
+                    <h3>Displacements</h3>
+                    <div class="input-row">
+                        <label>u_x<input type="number" id="u_x" step="any"></label>
+                        <label>u_y<input type="number" id="u_y" step="any"></label>
+                        <label>u_z<input type="number" id="u_z" step="any"></label>
+                    </div>
+                    <div class="input-row">
+                        <label>θ_x<input type="number" id="theta_x" step="any"></label>
+                        <label>θ_y<input type="number" id="theta_y" step="any"></label>
+                        <label>θ_z<input type="number" id="theta_z" step="any"></label>
+                    </div>
+
+                    <h3>Forces</h3>
+                    <div class="input-row">
+                        <label>F_x<input type="number" id="F_x" step="any"></label>
+                        <label>F_y<input type="number" id="F_y" step="any"></label>
+                        <label>F_z<input type="number" id="F_z" step="any"></label>
+                    </div>
+                    <div class="input-row">
+                        <label>M_x<input type="number" id="M_x" step="any"></label>
+                        <label>M_y<input type="number" id="M_y" step="any"></label>
+                        <label>M_z<input type="number" id="M_z" step="any"></label>
+                    </div>
+                </div>
+                <button id="apply-loading-bc" class="secondary-button">Apply</button>
+                <div id="loading-bc-status" class="status-message"></div>
+            </div>
+
+            <div class="section">
+                <h2>Element Properties</h2>
+                <select id="element-selector" class="full-width"></select>
+                
+                <div class="input-groups compact">
+                    <div class="input-row">
+                        <label>E<input type="number" id="E" step="any"></label>
+                        <label>A<input type="number" id="A" step="any"></label>
+                        <label>J<input type="number" id="J" step="any"></label>
+                    </div>
+                    <div class="input-row">
+                        <label>Iy<input type="number" id="Iy" step="any"></label>
+                        <label>Iz<input type="number" id="Iz" step="any"></label>
+                        <label>nu<input type="number" id="nu" step="any"></label>
+                    </div>
+                    <div class="input-row">
+                        <label>local_z (x,y,z)<input type="text" id="local_z" placeholder="0,0,1"></label>
+                    </div>
+                </div>
+                <button id="apply-element-props" class="secondary-button">Apply</button>
+                <div id="element-props-status" class="status-message"></div>
+            </div>
+
+            <button id="node-type-all-set" class="primary-button">All Set</button>
+        </div>
+
+        <!-- Postprocessing Tab -->
+        <div id="postprocessing" class="tab-content">
+            <div class="section">
+                <h2>Analysis Controls</h2>
+                <div id="controls">
+                    <div class="input-row">
+                        <label>
+                            Deformation Scale
+                            <input type="number" id="deformationScale" min="0" value="50" step="any">
+                        </label>
+                        <button id="apply-scale-btn" class="secondary-button">Apply Scale</button>
+                    </div>
+                    <button id="reset-camera-btn" class="secondary-button">Reset Camera</button>
+                    <button id="toggle-deformed-btn" class="secondary-button">Show Deformed Shape</button>
+                </div>
+                <button id="calculate-btn" class="primary-button">Calculate</button>
+                <div id="calculation-status"></div>
+            </div>
+
+            <div class="section">
+                <h2>Results</h2>
+                <div id="results"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="right-panel" class="panel">
+        <div id="canvas-container"></div>
+        <div id="info">
+            <h2>3D Visualization</h2>
+            <p>Click and drag to rotate</p>
+            <p>Scroll to zoom</p>
+            <p>Right-click and drag to pan</p>
+        </div>
+    </div>
+
+    <!-- Theme toggle script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const icon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference or respect OS preference
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+                document.body.classList.add('dark-theme');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+            
+            // Toggle theme when button is clicked
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-theme');
+                
+                // Update icon
+                if (document.body.classList.contains('dark-theme')) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+
+    <!-- Load our fixed application script after Three.js -->
+    <script type="module" src="js/fixed-module.js"></script>
+</body>
+</html> 

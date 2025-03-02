@@ -5,6 +5,7 @@ src/element.py
 src/frame.py
 src/math_utils.py
 src/node.py
+src/shape_functions.py
 src/jax/element.py
 src/jax/frame.py
 src/jax/node.py

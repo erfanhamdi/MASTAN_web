@@ -1,0 +1,521 @@
+:root {
+    /* Light theme (default) */
+    --bg-color: #f9f9f9;
+    --panel-bg: #f5f5f5;
+    --text-color: #333;
+    --text-secondary: #666;
+    --border-color: #e0e0e0;
+    --section-bg: white;
+    --input-bg: #fafafa;
+    --primary-color: #2196F3;
+    --primary-hover: #1976D2;
+    --secondary-bg: #f0f0f0;
+    --secondary-hover: #e0e0e0;
+    --shadow-color: rgba(0,0,0,0.08);
+    --canvas-bg: #1a1a1a;
+    --table-header-bg: #f5f5f5;
+    --table-row-even: #fafafa;
+    --table-row-hover: #f0f0f0;
+    --success-bg: #e8f5e9;
+    --success-color: #2e7d32;
+    --error-bg: #ffebee;
+    --error-color: #c62828;
+}
+
+.dark-theme {
+    --bg-color: #121212;
+    --panel-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --text-secondary: #aaaaaa;
+    --border-color: #333333;
+    --section-bg: #252525;
+    --input-bg: #2a2a2a;
+    --primary-color: #2196F3;
+    --primary-hover: #64b5f6;
+    --secondary-bg: #333333;
+    --secondary-hover: #444444;
+    --shadow-color: rgba(0,0,0,0.2);
+    --canvas-bg: #0a0a0a;
+    --table-header-bg: #333333;
+    --table-row-even: #252525;
+    --table-row-hover: #333333;
+    --success-bg: #1b3a27;
+    --success-color: #81c784;
+    --error-bg: #3e1a1a;
+    --error-color: #ef9a9a;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.panel {
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#left-panel {
+    width: 40%;
+    background-color: var(--panel-bg);
+    border-right: 1px solid var(--border-color);
+    position: relative;
+}
+
+#right-panel {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Theme toggle */
+#theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--secondary-bg);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+#theme-toggle:hover {
+    background-color: var(--secondary-hover);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-button {
+    padding: 8px 12px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-right: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+}
+
+.tab-button:hover {
+    color: var(--primary-color);
+    background-color: rgba(33, 150, 243, 0.05);
+}
+
+.tab-button.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    background-color: transparent;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Sections */
+.section {
+    background-color: var(--section-bg);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+h1 {
+    color: var(--text-color);
+    margin-top: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+h3 {
+    color: var(--text-secondary);
+    margin: 8px 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Inputs */
+input, select {
+    padding: 6px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.full-width {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.node-input {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.coord-input {
+    width: 60px;
+    text-align: center;
+    height: 28px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* Input groups */
+.input-groups {
+    margin-bottom: 12px;
+}
+
+.input-groups.compact .input-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 6px;
+    justify-content: space-between;
+}
+
+.input-groups.compact label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    flex: 1;
+    color: var(--text-secondary);
+}
+
+/* Make displacement textboxes smaller in width but taller */
+.input-groups.compact input {
+    width: 80%;
+    margin-top: 2px;
+    padding: 5px 8px;
+    height: 28px;
+    font-size: 0.85rem;
+}
+
+/* Buttons */
+button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    color: var(--text-color);
+    background-color: var(--secondary-bg);
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 8px 16px;
+}
+
+.primary-button:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.secondary-button {
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+}
+
+.secondary-button:hover {
+    background-color: var(--secondary-hover);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+button:disabled {
+    background-color: var(--secondary-bg);
+    opacity: 0.5;
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Lists */
+.node-list, .element-list {
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 4px;
+    background-color: var(--input-bg);
+    font-size: 0.85rem;
+}
+
+.node-item, .element-item {
+    padding: 4px 6px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+.node-item:hover, .element-item:hover {
+    background-color: var(--secondary-bg);
+}
+
+.node-item.selected {
+    background-color: rgba(33, 150, 243, 0.1);
+    font-weight: 500;
+}
+
+/* Status messages */
+.status-message {
+    margin-top: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.success {
+    background-color: var(--success-bg);
+    color: var(--success-color);
+    border-left: 3px solid var(--success-color);
+}
+
+.error {
+    background-color: var(--error-bg);
+    color: var(--error-color);
+    border-left: 3px solid var(--error-color);
+}
+
+/* Canvas */
+#canvas-container {
+    flex: 1;
+    background-color: var(--canvas-bg);
+    position: relative;
+    min-height: 400px;
+}
+
+#info {
+    padding: 12px;
+    background-color: var(--panel-bg);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+}
+
+#info h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+#info p {
+    margin: 4px 0;
+    color: var(--text-secondary);
+}
+
+/* Controls */
+#controls {
+    margin-bottom: 12px;
+}
+
+#controls label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Results */
+.result-header {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+    font-size: 0.95rem;
+}
+
+.result-details {
+    background-color: var(--input-bg);
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    font-size: 0.85rem;
+}
+
+.result-section {
+    margin-bottom: 12px;
+}
+
+.result-section h3 {
+    margin-top: 0;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+}
+
+.result-section p {
+    margin: 4px 0;
+    color: var(--text-secondary);
+}
+
+/* Table styles for results */
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.results-table th {
+    background-color: var(--table-header-bg);
+    color: var(--text-color);
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 500;
+}
+
+.results-table td {
+    border-bottom: 1px solid var(--border-color);
+    padding: 5px 8px;
+}
+
+.results-table tr:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
+.results-table tr:hover {
+    background-color: var(--table-row-hover);
+}
+
+/* Element selector styling */
+#element-selector, #node-selector {
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    height: 34px;
+}
+
+/* Highlight selected elements in the 3D scene */
+.element-selected {
+    color: #00BFFF;
+}
+
+/* Highlight elements with properties */
+.element-with-properties {
+    color: #00FF00;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--input-bg);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary-hover);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Postprocessing tab */
+#postprocessing #controls {
+    margin-bottom: 20px;
+}
+
+#postprocessing #controls .input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+#postprocessing #controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-weight: 500;
+}
+
+#deformationScale {
+    width: 80px;
+    height: 28px;
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+#apply-scale-btn {
+    height: 28px;
+    padding: 0 12px;
+    margin-top: 20px; /* Align with the input */
+}
+
+#postprocessing #calculation-status {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#postprocessing #calculation-status.error {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #ff3333;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+#postprocessing #calculation-status.success {
+    background-color: rgba(0, 255, 0, 0.1);
+    color: #00cc00;
+    border: 1px solid rgba(0, 255, 0, 0.2);
+} 

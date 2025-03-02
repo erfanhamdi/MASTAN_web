@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 import matplotlib.pyplot as plt
 
 class Frame:
@@ -29,6 +30,12 @@ class Frame:
         for node_id, node in enumerate(self.nodes):
             node.id = node_id
         self.number_of_dofs = self.num_dofs()
+        for elem in self.elems:
+            elem.element_dof_list_ = self.element_dof_list(elem)
+
+
+    def element_dof_list(self, elem):
+            return [*list(range(elem.node_list[0].id*6, elem.node_list[0].id*6 + 6)), *list(range(elem.node_list[1].id*6, elem.node_list[1].id*6 + 6))]
 
     def num_dofs(self):
         node_dict = {}
@@ -61,12 +68,28 @@ class Frame:
         self.K_sf = self.K[np.ix_(self.fixed_dofs, self.free_dofs)]
         self.K_ss = self.K[np.ix_(self.fixed_dofs, self.fixed_dofs)]
         self.F[self.free_dofs] = np.array(f_list)[self.free_dofs]
-
+    
     def solve(self,):
         self.Delta[self.free_dofs] = np.linalg.inv(self.K_ff) @ self.F[self.free_dofs]
         self.F[self.fixed_dofs] = self.K_sf @ self.Delta[self.free_dofs] 
         return self.Delta, self.F
     
+    def assemble_geometric(self,):
+        self.K_g = np.zeros((self.number_of_dofs, self.number_of_dofs))
+        for i, elem in enumerate(self.elems):
+            small_K_g = elem.global_geometric_stiffness_mat(elem.k_g)
+            node_1_id = elem.node_list[0].id
+            node_2_id = elem.node_list[1].id
+            self.K_g[6*node_1_id:6*(node_1_id+1), 6*node_1_id:6*(node_1_id+1)] += small_K_g[:6, :6]
+            self.K_g[6*node_1_id:6*(node_1_id+1), 6*node_2_id:6*(node_2_id+1)] += small_K_g[:6, 6:]
+            self.K_g[6*node_2_id:6*(node_2_id+1), 6*node_1_id:6*(node_1_id+1)] += small_K_g[6:, :6]
+            self.K_g[6*node_2_id:6*(node_2_id+1), 6*node_2_id:6*(node_2_id+1)] += small_K_g[6:, 6:]
+        
+    def eigenvalue_analysis(self,):
+        eig_val, eig_vec = scipy.linalg.eig(self.K, -self.K_g)
+        return eig_val, eig_vec
+
+
     # def plot_initial(self,):
     #     plt.figure()
     #     for node in self.nodes:
