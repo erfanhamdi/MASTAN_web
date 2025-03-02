@@ -1,5 +1,5 @@
 import numpy as np
-import scipy
+# import scipy
 import matplotlib.pyplot as plt
 
 class Frame:
@@ -85,9 +85,9 @@ class Frame:
             self.K_g[6*node_2_id:6*(node_2_id+1), 6*node_1_id:6*(node_1_id+1)] += small_K_g[6:, :6]
             self.K_g[6*node_2_id:6*(node_2_id+1), 6*node_2_id:6*(node_2_id+1)] += small_K_g[6:, 6:]
         
-    def eigenvalue_analysis(self,):
-        eig_val, eig_vec = scipy.linalg.eig(self.K, -self.K_g)
-        return eig_val, eig_vec
+    # def eigenvalue_analysis(self,):
+    #     eig_val, eig_vec = scipy.linalg.eig(self.K, -self.K_g)
+    #     return eig_val, eig_vec
 
 
     # def plot_initial(self,):
