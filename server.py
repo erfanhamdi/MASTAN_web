@@ -15,7 +15,7 @@ from flask_cors import CORS
 from src.frame import Frame
 from src.element import Element
 from src.node import Node
-from src.shape_functions import plot_original, plot_deformed, LinearShapeFunctions, HermiteShapeFunctions
+from src.shape_functions import HermiteShapeFunctions
 
 
 app = Flask(__name__)
