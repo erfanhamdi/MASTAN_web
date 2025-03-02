@@ -1,5 +1,5 @@
 import numpy as np
-from frame import Frame
+# from src.frame import Frame
 
 class Node:
     def __init__(self, coords, **kwargs):

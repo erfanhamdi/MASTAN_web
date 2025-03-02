@@ -1,6 +1,6 @@
 import numpy
-from frame import Frame
-from math_utils import local_elastic_stiffness_matrix_3D_beam, rotation_matrix_3D, transformation_matrix_3D, local_geometric_stiffness_matrix_3D_beam
+from src.frame import Frame
+from src.math_utils import local_elastic_stiffness_matrix_3D_beam, rotation_matrix_3D, transformation_matrix_3D, local_geometric_stiffness_matrix_3D_beam
 
 class Element(Frame):
     def __init__(self, node_list, **kwargs):

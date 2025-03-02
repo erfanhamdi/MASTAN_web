@@ -1,8 +1,8 @@
 import numpy as np
 # import matplotlib.pyplot as plt
 
-from element import Element
-from node import Node
+from src.element import Element
+# from src.node import Node
 
 
 # def plot_original(elem_list, fig, discretization_points: int = 100):
