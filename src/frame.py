@@ -1,6 +1,6 @@
 import numpy as np
 # import scipy
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 class Frame:
     def __init__(self):

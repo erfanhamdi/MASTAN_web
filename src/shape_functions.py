@@ -1,51 +1,51 @@
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from element import Element
 from node import Node
 
 
-def plot_original(elem_list, fig, discretization_points: int = 100):
-    ax = fig.add_subplot(111, projection='3d')
-    for elem_ in elem_list:
-        x_lin = np.linspace(elem_.node_list[0].coords[0], elem_.node_list[1].coords[0], discretization_points)
-        y_lin = np.linspace(elem_.node_list[0].coords[1], elem_.node_list[1].coords[1], discretization_points)
-        z_lin = np.linspace(elem_.node_list[0].coords[2], elem_.node_list[1].coords[2], discretization_points)
-        ax.plot(x_lin, y_lin, z_lin, '--k', label='Original Shape')
-    plt.show()
+# def plot_original(elem_list, fig, discretization_points: int = 100):
+#     ax = fig.add_subplot(111, projection='3d')
+#     for elem_ in elem_list:
+#         x_lin = np.linspace(elem_.node_list[0].coords[0], elem_.node_list[1].coords[0], discretization_points)
+#         y_lin = np.linspace(elem_.node_list[0].coords[1], elem_.node_list[1].coords[1], discretization_points)
+#         z_lin = np.linspace(elem_.node_list[0].coords[2], elem_.node_list[1].coords[2], discretization_points)
+#         ax.plot(x_lin, y_lin, z_lin, '--k', label='Original Shape')
+#     plt.show()
 
-def plot_deformed(elem_list, shape_function, displacement_vector, scale: float = 1, discretization_points: int = 100):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    for elem_ in elem_list:
-        x_lin = np.linspace(elem_.node_list[0].coords[0], elem_.node_list[1].coords[0], discretization_points)
-        y_lin = np.linspace(elem_.node_list[0].coords[1], elem_.node_list[1].coords[1], discretization_points)
-        z_lin = np.linspace(elem_.node_list[0].coords[2], elem_.node_list[1].coords[2], discretization_points)
-        ax.plot(x_lin, y_lin, z_lin, '--k')
-    ax.plot(x_lin, y_lin, z_lin, '--k', label='Original Shape')
-    deformed_shape_list = []
-    for elem_ in elem_list:
-        deformed_shape_array = shape_function.apply(displacement_vector[elem_.dof_list()] * scale, elem_)
-        deformed_shape_list.append(deformed_shape_array)
-        discretization_points = len(deformed_shape_array)
-        ax.scatter(deformed_shape_array[0, 0], deformed_shape_array[0, 1], deformed_shape_array[0, 2], c='r', s=10)
-        ax.scatter(deformed_shape_array[-1, 0], deformed_shape_array[-1, 1], deformed_shape_array[-1, 2], c='r', s=10)
-        x_lin = np.linspace(deformed_shape_array[0, 0], deformed_shape_array[-1, 0], discretization_points)
-        y_lin = np.linspace(deformed_shape_array[0, 1], deformed_shape_array[-1, 1], discretization_points)
-        ax.plot(x_lin, y_lin, deformed_shape_array[:, 2],'-b')
-    ax.plot(x_lin, y_lin, deformed_shape_array[:, 2],'-b', label='Deformed Shape')
-    # plt.scatter(deformed_shape_list[0][0, 0], deformed_shape_list[0][0, 1], deformed_shape_list[0][0, 2], c='r')
-    # plt.scatter(deformed_shape_list[1][0, 0], deformed_shape_list[1][0, 1], deformed_shape_list[1][0, 2], c='b')
-    # plt.scatter(deformed_shape_list[0][-1, 0], deformed_shape_list[0][-1, 1], deformed_shape_list[0][-1, 2], c='g')
-    # plt.scatter(deformed_shape_list[1][-1, 0], deformed_shape_list[1][-1, 1], deformed_shape_list[1][-1, 2], c='y')
-    deformed_shape = np.concatenate(deformed_shape_list)
-    # ax = fig.add_subplot(111, projection='3d')
-    # ax.plot(x_lin, y_lin, deformed_shape[:, 2],'-b', label='Deformed Shape')
-    ax.legend()
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('z')
-    plt.show()
+# def plot_deformed(elem_list, shape_function, displacement_vector, scale: float = 1, discretization_points: int = 100):
+#     fig = plt.figure()
+#     ax = fig.add_subplot(111, projection='3d')
+#     for elem_ in elem_list:
+#         x_lin = np.linspace(elem_.node_list[0].coords[0], elem_.node_list[1].coords[0], discretization_points)
+#         y_lin = np.linspace(elem_.node_list[0].coords[1], elem_.node_list[1].coords[1], discretization_points)
+#         z_lin = np.linspace(elem_.node_list[0].coords[2], elem_.node_list[1].coords[2], discretization_points)
+#         ax.plot(x_lin, y_lin, z_lin, '--k')
+#     ax.plot(x_lin, y_lin, z_lin, '--k', label='Original Shape')
+#     deformed_shape_list = []
+#     for elem_ in elem_list:
+#         deformed_shape_array = shape_function.apply(displacement_vector[elem_.dof_list()] * scale, elem_)
+#         deformed_shape_list.append(deformed_shape_array)
+#         discretization_points = len(deformed_shape_array)
+#         ax.scatter(deformed_shape_array[0, 0], deformed_shape_array[0, 1], deformed_shape_array[0, 2], c='r', s=10)
+#         ax.scatter(deformed_shape_array[-1, 0], deformed_shape_array[-1, 1], deformed_shape_array[-1, 2], c='r', s=10)
+#         x_lin = np.linspace(deformed_shape_array[0, 0], deformed_shape_array[-1, 0], discretization_points)
+#         y_lin = np.linspace(deformed_shape_array[0, 1], deformed_shape_array[-1, 1], discretization_points)
+#         ax.plot(x_lin, y_lin, deformed_shape_array[:, 2],'-b')
+#     ax.plot(x_lin, y_lin, deformed_shape_array[:, 2],'-b', label='Deformed Shape')
+#     # plt.scatter(deformed_shape_list[0][0, 0], deformed_shape_list[0][0, 1], deformed_shape_list[0][0, 2], c='r')
+#     # plt.scatter(deformed_shape_list[1][0, 0], deformed_shape_list[1][0, 1], deformed_shape_list[1][0, 2], c='b')
+#     # plt.scatter(deformed_shape_list[0][-1, 0], deformed_shape_list[0][-1, 1], deformed_shape_list[0][-1, 2], c='g')
+#     # plt.scatter(deformed_shape_list[1][-1, 0], deformed_shape_list[1][-1, 1], deformed_shape_list[1][-1, 2], c='y')
+#     deformed_shape = np.concatenate(deformed_shape_list)
+#     # ax = fig.add_subplot(111, projection='3d')
+#     # ax.plot(x_lin, y_lin, deformed_shape[:, 2],'-b', label='Deformed Shape')
+#     ax.legend()
+#     ax.set_xlabel('x')
+#     ax.set_ylabel('y')
+#     ax.set_zlabel('z')
+#     plt.show()
 
 class LinearShapeFunctions:
     def __init__(self, elem: Element, discretization_points: int = 100):
